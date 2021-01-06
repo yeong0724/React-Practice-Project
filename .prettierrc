@@ -1,0 +1,8 @@
+{
+    "singleQuote": true,
+    "semi": true,
+    "useTabs": false,
+    "tabWidth": 4,
+    "prettier.printWidth": 800,
+    "JSX Brackets": true
+}
