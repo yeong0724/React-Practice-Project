@@ -1,0 +1,84 @@
+$blue: #1c7ed6;
+$gray: #adb5bd;
+$pink: #fcc2d7;
+
+/* 반복되는 css 코드를 함수화하는 기능 */
+@mixin button-color($color) {
+    background: $color;
+    &:hover {
+        background: lighten($color, 10%);
+    }
+    &:active {
+        background: darken($color, 10%);
+    }
+
+    &.outline {
+        color: $color;
+        background: none;
+        border: 1px solid $color;
+        &:hover {
+            background: $color;
+            color: white;
+        }
+    }
+}
+
+.Button {
+    display: inline-flex;
+    color: white;
+    font-weight: bold;
+    outline: none;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+
+    align-items: center;
+    padding: 0 1rem;
+
+    /* Button.js에서 className으로 {.Button + size 속성값}이 부여가 되면 그에맞는 CSS가 적용이 됨 */
+    &.large {
+        height: 3rem;
+        font-size: 1.25rem;
+    }
+
+    &.medium {
+        height: 2.25rem;
+        font-size: 1rem;
+    }
+
+    &.samll {
+        height: 1.75rem;
+        font-size: 0.875rem;
+    }
+
+    // 색상 관리
+    &.blue {
+        @include button-color($blue);
+    }
+
+    &.gray {
+        @include button-color($gray);
+    }
+
+    &.pink {
+        @include button-color($pink);
+    }
+
+    & + & {
+        margin-left: 1rem;
+    }
+
+    &.fullWidth {
+        width: 100%;
+        justify-content: center; //flex 속성을 쓸때만 사용가능함
+        margin-top: 1rem;
+        & + & {
+            margin-left: 0;
+            margin-top: 1rem;
+        }
+    }
+}
+
+// .Button + .Button {
+//     margin-left: 1rem;
+// }
