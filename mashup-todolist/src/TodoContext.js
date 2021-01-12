@@ -80,6 +80,7 @@ export function useTodoNextId() {
     if (!context) {
         throw new Error('Cannot find TodoProvider');
     }
+    return context;
     /* TodoContext의 nextId를 참조하고 싶다면 함수를 선언하고 값을 관리해주면 됨
      * const nextId = useTodoNextId()
      * nextId.current += 1;

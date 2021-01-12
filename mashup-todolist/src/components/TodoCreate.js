@@ -112,6 +112,7 @@ function TodoCreate() {
             {open && (
                 <InsertFormPositioner>
                     <InsertForm onSubmit={onSubmit}>
+                        {/* 기본적으로 form Tag안에 input Tag가 유일한경우 Enter를 치게되면 자동으로 Submit하게됨   */}
                         <Input
                             autoFocus
                             placeholder="할 일을 입력 후, Enter 를 누르세요"
