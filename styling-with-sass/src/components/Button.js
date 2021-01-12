@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import './Button.scss';
 
-// size : large, medium, small
+/* rest props 전달 */
 function Button({ children, size, color, outline, fullWidth, ...rest }) {
     /* className을 size에 맞춰 유동적으로 바뀔수 있게 부여함
      * className = {['Button', size].join('')}
@@ -16,7 +16,7 @@ function Button({ children, size, color, outline, fullWidth, ...rest }) {
                 outline,
                 fullWidth,
             })}
-            {...rest}
+            {...rest} //props로 전달받은 rest 객체 모든것들을 button에게 설정해줌
         >
             {children}
         </button>

@@ -1,17 +1,16 @@
 {
-  "name": "styling-with-sass",
+  "name": "styling-with-styled-components",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "axios": "^0.21.1",
-    "classnames": "^2.2.6",
-    "node-sass": "4.14.1",
+    "polished": "^4.0.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
+    "styled-components": "^5.2.1",
     "web-vitals": "^0.2.4"
   },
   "scripts": {

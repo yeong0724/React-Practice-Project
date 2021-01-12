@@ -3,6 +3,6 @@
     "semi": true,
     "useTabs": false,
     "tabWidth": 4,
-    "prettier.printWidth": 800,
+    "prettier.printWidth": 400,
     "JSX Brackets": true
 }
