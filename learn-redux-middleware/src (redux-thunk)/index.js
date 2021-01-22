@@ -5,21 +5,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import rootReducer, { rootSaga } from './modules';
+import rootReducer from './modules';
 import logger from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import ReduxThunk from 'redux-thunk';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import createSagaMiddleware from 'redux-saga';
 
 const customHistory = createBrowserHistory();
-const sagaMiddleware = createSagaMiddleware({
-    context: {
-        /* middeleware에서 context에 history를 등록해줌, 그리고 context에 등록한 것은 saga에서 조회가 가능함*/
-        history: customHistory,
-    },
-});
 
 /* <Router + createBrowserHistory>
  * 프로젝트를 개발하다보면, thunk 함수 내에서 라우터를 사용할수 있음
@@ -31,14 +24,10 @@ const store = createStore(
     composeWithDevTools(
         applyMiddleware(
             ReduxThunk.withExtraArgument({ history: customHistory }),
-            sagaMiddleware,
             logger
         )
     )
 );
-
-/* root-saga를 등록하기위해 run() 호출 */
-sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
     <Router history={customHistory}>

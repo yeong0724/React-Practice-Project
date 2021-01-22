@@ -1,55 +1,46 @@
 import { call, put } from 'redux-saga/effects';
 
+// 프로미스를 기다렸다가 결과를 디스패치하는 사가
 export const createPromiseSaga = (type, promiseCreator) => {
     const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
     return function* saga(action) {
         try {
-            const result = yield call(promiseCreator, action.payload); //promiseCreator : promise를 만들어주는 함수
-            yield put({
-                type: SUCCESS,
-                payload: result,
-            });
+            // 재사용성을 위하여 promiseCreator 의 파라미터엔 action.payload 값을 넣도록 설정합니다.
+            const payload = yield call(promiseCreator, action.payload);
+            yield put({ type: SUCCESS, payload });
         } catch (e) {
-            yield put({
-                type: ERROR,
-                error: true,
-                payload: e,
-            });
+            yield put({ type: ERROR, error: true, payload: e });
         }
     };
 };
 
+// 특정 id의 데이터를 조회하는 용도로 사용하는 사가
+// API를 호출 할 때 파라미터는 action.payload를 넣고,
+// id 값을 action.meta로 설정합니다.
 export const createPromiseSagaById = (type, promiseCreator) => {
     const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
     return function* saga(action) {
-        const id = action.meta; // 성공 or 실패 했을때 meta값으로 id를 전달함
+        const id = action.meta;
         try {
-            const result = yield call(promiseCreator, action.payload); //promiseCreator : promise를 만들어주는 함수
-            yield put({
-                type: SUCCESS,
-                payload: result,
-                meta: id,
-            });
+            const payload = yield call(promiseCreator, action.payload);
+            yield put({ type: SUCCESS, payload, meta: id });
         } catch (e) {
-            yield put({
-                type: ERROR,
-                error: true,
-                payload: e,
-                meta: id,
-            });
+            yield put({ type: ERROR, error: e, meta: id });
         }
     };
 };
 
-/* reducer에서 사용 할 수 있는 여러 유틸 함수 선언 */
+// 리듀서에서 사용 할 수 있는 여러 유틸 함수들입니다.
 export const reducerUtils = {
-    // 초기 상태. 초기 data 값은 기본적으로 null 이지만 바꿀 수도 있습니다.
+    // 초기 상태. 초기 data 값은 기본적으로 null 이지만
+    // 바꿀 수도 있습니다.
     initial: (initialData = null) => ({
         loading: false,
         data: initialData,
         error: null,
     }),
-    // 로딩중 상태 - prevState의 경우엔 기본값은 null 이지만, 따로 값을 지정하면 null 로 바꾸지 않고 다른 값을 유지시킬 수 있습니다.
+    // 로딩중 상태. prevState의 경우엔 기본값은 null 이지만
+    // 따로 값을 지정하면 null 로 바꾸지 않고 다른 값을 유지시킬 수 있습니다.
     loading: (prevState = null) => ({
         loading: true,
         data: prevState,
@@ -69,19 +60,16 @@ export const reducerUtils = {
     }),
 };
 
-/* 비동기 관련 3가지 액션들을 처리하는 reducer
- * type - 액션의 타입,
- * key - 상태의 key (ex. posts, post) */
-export const handleAsyncActions = (type, key, keepData) => {
+// 비동기 관련 액션들을 처리하는 리듀서를 만들어줍니다.
+// type 은 액션의 타입, key 는 상태의 key (예: posts, post) 입니다.
+export const handleAsyncActions = (type, key) => {
     const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
     return (state, action) => {
         switch (action.type) {
             case type:
                 return {
                     ...state,
-                    [key]: reducerUtils.loading(
-                        keepData ? state[key].data : null
-                    ), //handleAsyncActions의 3번째 값을 true로 받아 온다면 기존의 상태값을 유지하겠다라는 의미(false면 null 처리)
+                    [key]: reducerUtils.loading(),
                 };
             case SUCCESS:
                 return {
@@ -99,7 +87,8 @@ export const handleAsyncActions = (type, key, keepData) => {
     };
 };
 
-export const handleAsyncActionsById = (type, key, keepData) => {
+// id별로 처리하는 유틸함수
+export const handleAsyncActionsById = (type, key, keepData = false) => {
     const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
     return (state, action) => {
         const id = action.meta;
@@ -110,8 +99,9 @@ export const handleAsyncActionsById = (type, key, keepData) => {
                     [key]: {
                         ...state[key],
                         [id]: reducerUtils.loading(
+                            // state[key][id]가 만들어져있지 않을 수도 있으니까 유효성을 먼저 검사 후 data 조회
                             keepData
-                                ? state[key][id] && state[key][id].data //읽어오고자 하는 state[key][id]값이 undefined면 null 처리됨
+                                ? state[key][id] && state[key][id].data
                                 : null
                         ),
                     },

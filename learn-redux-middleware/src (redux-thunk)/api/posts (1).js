@@ -1,8 +1,8 @@
-// /* n 밀리세컨드동안 기다리는 프로미스를 만들어주는 함수
-//  * sleep(1000).then(() => console.log('Hello World')); */
+/* n 밀리세컨드동안 기다리는 프로미스를 만들어주는 함수
+ * sleep(1000).then(() => console.log('Hello World')); */
 // const sleep = (n) => new Promise((resolve) => setTimeout(resolve, n));
 
-// /* 포스트 목록 데이터 - id, title, body */
+/* 가짜 포스트 목록 데이터 - id, title, body */
 // const posts = [
 //     {
 //         id: 1,
@@ -22,27 +22,16 @@
 //     },
 // ];
 
-// /* 포스트 목록을 가져오는 비동기 함수 */
-// export const getPosts = async () => {
-//     await sleep(500); // 0.5초 쉬고
-//     return posts; // posts 배열
-// };
-
-// /* ID로 포스트를 조회하는 비동기 함수 */
-// export const getPostById = async (id) => {
-//     await sleep(500); // 0.5초 쉬고
-//     return posts.find((post) => post.id === id); // id 로 찾아서 반환
-// };
-
 import axios from 'axios';
+
 /* 포스트 목록을 가져오는 비동기 함수
  * getPosts를 호출하게 되면 하나의 promise가 만들어지게 되고 그 promise에서는 0.5초뒤에 posts를 반환해줌 */
-
 export const getPosts = async () => {
     const response = await axios.get('/posts');
     return response.data;
 };
 
+/* ID로 포스트를 조회하는 비동기 함수 */
 export const getPostById = async (id) => {
     const response = await axios.get(`/posts/${id}`);
     return response.data;
