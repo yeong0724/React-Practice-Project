@@ -71,7 +71,7 @@ export const login = async (ctx) => {
         const valid = await user.checkPassword(password);
         // 잘못된 비밀번호
         if (!valid) {
-            ctx.status = 401;
+            ctx.status = 402;
             return;
         }
         ctx.body = user.serialize();
