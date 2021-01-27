@@ -36,7 +36,7 @@ const Footer = styled.div`
     text-align: right;
     a {
         color: ${palette.gray[6]};
-        text-decoration: underline;
+        // text-decoration: underline;
         &:hover {
             color: ${palette.gray[9]};
         }

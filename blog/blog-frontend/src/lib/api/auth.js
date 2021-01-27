@@ -4,6 +4,9 @@ import client from './client';
 export const login = ({ username, password }) =>
     client.post('/api/auth/login', { username, password });
 
+/* 로그아웃 */
+export const logout = () => client.post('/api/auth/logout');
+
 /* 회원 가입 */
 export const register = ({ username, password }) =>
     client.post('/api/auth/register', { username, password });
