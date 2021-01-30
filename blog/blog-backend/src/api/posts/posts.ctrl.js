@@ -1,8 +1,33 @@
 import Post from '../../models/post';
 import mongoose from 'mongoose';
 import Joi from '@hapi/joi';
+import sanitizeHtml from 'sanitize-html';
 
 const { ObjectId } = mongoose.Types;
+
+const sanitizeOption = {
+    allowedTags: [
+        'h1',
+        'h2',
+        'b',
+        'i',
+        'u',
+        's',
+        'p',
+        'ul',
+        'ol',
+        'li',
+        'blockquote',
+        'a',
+        'img',
+    ],
+    allowedAttributes: {
+        a: ['href', 'name', 'target'],
+        img: ['src'],
+        li: ['class'],
+    },
+    allowedSchemes: ['data', 'http'],
+};
 
 /* 입력된 id의 Data type 확인 & 해당 id에 해당하는 Post가 있는지 검증하는 middleware */
 export const getPostById = async (ctx, next) => {
@@ -60,7 +85,7 @@ export const write = async (ctx) => {
     //Post의 인스턴스를 만들 때는 new 키워드를 사용하고, 생성자 함수의 파라미터에 정보를 지닌 객체를 넣음
     const post = new Post({
         title,
-        body,
+        body: sanitizeHtml(body, sanitizeOption),
         tags,
         user: ctx.state.user,
     });
@@ -71,6 +96,14 @@ export const write = async (ctx) => {
     } catch (e) {
         ctx.throw(500, e);
     }
+};
+
+/* HTML & 글자수 Filering 함수 */
+const removeHtmlAndShorten = (body) => {
+    const filtered = sanitizeHtml(body, {
+        allowedTags: [],
+    });
+    return filtered.length < 200 ? filtered : `${filtered.slice(0, 200)}...`;
 };
 
 /* 글조회 : GET /api/posts?username=&tag=&page=
@@ -101,14 +134,11 @@ export const list = async (ctx) => {
         const postCount = await Post.countDocuments(query).exec();
         ctx.set('Last-Page', Math.ceil(postCount / 10));
         ctx.body = posts
-            .map((post) => post.toJSON())
+            .map((post) => post.toJSON()) // lean() 함수를 거치면 toJSON() 과정을 skip 할 수 있음
             .map((post) => ({
                 ...post,
-                body:
-                    post.body.length < 200
-                        ? post.body
-                        : `${post.body.slice(0, 200)}...`,
-            })); //body의 내용을 200자까지만 출력하고, 나머지는 "..." 처리, lean() 함수를 사용하면 곧바로 JSON형태로 data를 받아오기 떄문에 toJSON() 처리를 skip할 수 있음
+                body: removeHtmlAndShorten(post.body),
+            }));
     } catch (e) {
         ctx.throw(500, e);
     }
@@ -157,8 +187,15 @@ export const update = async (ctx) => {
         return;
     }
 
+    /* 객체를 복사하고body 값이 주어졌으면 HTML 필터링 */
+    const nextData = { ...ctx.request.body }; //
+
+    if (nextData.body) {
+        nextData.body = sanitizeHtml(nextData.body, sanitizeOption);
+    }
+
     try {
-        const post = await Post.findByIdAndUpdate(id, ctx.request.body, {
+        const post = await Post.findByIdAndUpdate(id, nextData, {
             /* new 값이 true이면 업데이트된 내용을, false이면 업데이트 전 내용을 반환함 */
             new: true,
         }).exec();
