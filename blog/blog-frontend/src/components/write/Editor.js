@@ -59,6 +59,17 @@ const Editor = ({ title, body, onChangeField }) => {
         });
     }, [onChangeField]);
 
+    /* Editor component에서 받아오는 body값은 Quill Editor에서 내용을 입력할때마다 변경되고, body가 변경될때마다 deps변수에 따라 useEffect가 호출된다
+     * useRef() 함수를 이용해 UI에 mount 되고 단 한번만 useEffect에 등록된 작업이 실행되도록 설정해줌
+     * -> deps 배열을 [] 비어있는 배열 처리 해줘도 같은 효과이지만 ESLint 규칙에 의해 비권장됨
+     * */
+    const mounted = useRef(false);
+    useEffect(() => {
+        if (mounted.current) return;
+        mounted.current = true;
+        quillInstance.current.root.innerHTML = body;
+    }, [body]);
+
     const onChangeTitle = (e) => {
         onChangeField({ key: 'title', value: e.target.value });
     };

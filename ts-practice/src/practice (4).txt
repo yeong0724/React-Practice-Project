@@ -1,0 +1,24 @@
+interface Person {
+    name: string;
+    age?: number; // ? : 설정을 해도 되고 안해도 되는 값이라는 것을 의미
+}
+
+/* Person과 Developer의 형태가 유사하므로 extends를 통해 상속받을수 있음 */
+// interface Developer {
+//     name: string;
+//     age?: number;
+//     skills: string[];
+// }
+interface Developer extends Person {
+    skills: string[];
+}
+
+const person: Person = {
+    name: '김사람',
+    age: 20,
+};
+
+const expert: Developer = {
+    name: '김개발',
+    skills: ['javascript', 'react'],
+};

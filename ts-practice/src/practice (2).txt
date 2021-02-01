@@ -1,0 +1,18 @@
+/* 정의된 함수를 호출하게 되면 하기처럼 함수 parameter의 type을 알 수 있음
+ * - sum(x: number, y: number): number
+ * - sum함수의 return값의 type또한 number로 선언됨 */
+function sum(x: number, y: number): number {
+    return x + y;
+}
+
+/* 내장함수를 사용하는 경우에도 data type 유추가 잘됨 */
+function sumArray(numbers: number[]): number {
+    return numbers.reduce((acc, current) => acc + current, 0);
+}
+
+const total = sumArray([1, 2, 3, 4, 5]);
+
+/* 함수에서 아무것도 반환하지 않는다면 이를 void로 설정 */
+function returnNothing(): void {
+    console.log("you ain't shit without your crew");
+}

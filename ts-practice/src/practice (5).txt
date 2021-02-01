@@ -1,0 +1,36 @@
+/* type alias
+ * - 특정 타입에 별칭을 붙이는 용도로 사용됨
+ * - 이를 이용하여 객체를 위한 타입을 설정할 수도 있고, 배열 or 그 어떤 타입이던 별칭을 부여할 수 있음
+ *
+ * <interface vs type>
+ * - interface : class와 관련된 타입인 경우 사용
+ * - type : 일반 객체의 타입인 경우 사용
+ * - 사실상 구분은 크게 의미없음, 일관성있게 사용하는 것이 중요함
+ */
+type Person1 = {
+    name: string;
+    age?: number; // ? : 설정을 해도 되고 안해도 되는 값이라는 것을 의미
+};
+
+/* & 는 Intersection 으로서 두개 이상의 타입들을 합쳐줌(interface의 'extends'와 유사함)
+ * 참조사이트 : https://www.typescriptlang.org/docs/handbook/advanced-types.html#intersection-types */
+type Developer1 = Person1 & {
+    skills: string[];
+};
+
+const Person1: Person1 = {
+    name: '김사람',
+};
+
+const expert1: Developer1 = {
+    name: '김개발',
+    skills: ['javascript', 'react'],
+};
+
+/* Person1[] 를 이제 앞으로 People 이라는 타입으로 사용 할 수 있음 */
+type People = Person1[];
+const people: People = [Person1, expert1];
+
+type Color = 'red' | 'orange' | 'yellow';
+const color1: Color = 'red';
+const colors: Color[] = ['red', 'orange'];

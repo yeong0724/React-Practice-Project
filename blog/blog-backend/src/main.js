@@ -7,6 +7,9 @@ import mongoose from 'mongoose';
 import api from './api';
 // import createFakeData from './createFakeData';
 import jwtMiddleware from './lib/jwtMiddleware';
+import serve from 'koa-static';
+import path from 'path';
+import send from 'koa-send';
 
 /* 비구조화 할당을 통해 process.env 내부 값에 대한 reference 만들기 */
 const { PORT, MONGO_URI } = process.env;
@@ -35,6 +38,15 @@ app.use(jwtMiddleware);
 
 /* app 인스턴스에 router 적용 */
 app.use(router.routes()).use(router.allowedMethods());
+
+const buildDirectory = path.resolve(__dirname, '../../blog-frontend/build');
+app.use(serve(buildDirectory));
+app.use(async (ctx) => {
+    if (ctx.status === 404 && ctx.path.indexOf('api') !== 0) {
+        /* Not Found이고 URL이 "/api"로 시작하지 않는 경우 index.html을 반환 */
+        await send(ctx, 'index.html', { root: buildDirectory });
+    }
+});
 
 /* PORT number를 지정하지 않았다면 4000 사용 */
 const port = PORT || 4000;

@@ -5,10 +5,13 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import WritePage from './pages/WritePage';
 import PostPage from './pages/PostPage';
-
+import { Helmet } from 'react-helmet-async';
 const App = () => {
     return (
         <>
+            <Helmet>
+                <title>REACTERS</title>
+            </Helmet>
             {/* path를 배열로 지정하면 하나의 component에 여러 경로를 설정할 수 있음 */}
             <Route component={PostListPage} path={['/@:username', '/']} exact />
             <Route component={LoginPage} path="/login" />

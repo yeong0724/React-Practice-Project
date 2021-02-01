@@ -1,0 +1,27 @@
+/* data type : number */
+let count = 0;
+count += 1;
+count = '갑자기 분위기 문자열'; // dataType이 맞지 않아 error 발생
+
+/* data type : string */
+const message: string = 'hello world';
+/* data type : boolean */
+const done: boolean = true;
+/* data type : number array */
+const numbers: number[] = [1, 2, 3];
+/* data type : string array */
+const messages: string[] = ['hello', 'world'];
+messages.push(1); //string 배열에 number를 넣으려고 하여 error 발생
+
+/* data type : string or undefined */
+let mightBeUndefined: string | undefined = undefined;
+mightBeUndefined = 'string';
+
+/* data type : string or undefined */
+let nullableNumber: number | null = null; // number 일수도 있고 null 일수도 있음
+nullableNumber = 100;
+
+/* data 값이 red, orange, yellow 중 하나 */
+let color: 'red' | 'orange' | 'yellow' = 'red';
+color = 'yellow';
+color = 'green'; //error 발생
