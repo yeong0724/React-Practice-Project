@@ -43,11 +43,19 @@ const LoginForm = ({ history }) => {
     useEffect(() => {
         if (authError) {
             console.log('오류 발생');
-            if (authError.response.status === 401) {
-                setError('존재하지 않은 계정입니다');
+            if (authError.response.status === 600) {
+                setError('아이디를 입력해주세요');
                 return;
             }
-            if (authError.response.status === 402) {
+            if (authError.response.status === 601) {
+                setError('비밀번호를 입력해주세요');
+                return;
+            }
+            if (authError.response.status === 602) {
+                setError('존재하지않은 계정입니다');
+                return;
+            }
+            if (authError.response.status === 603) {
                 setError('비밀번호가 일치하지 않습니다');
                 return;
             }

@@ -57,21 +57,27 @@ export const login = async (ctx) => {
 
     // username, password 가 없으면 에러 처리
     if (!username || !password) {
-        ctx.status = 401; // Unauthorized
-        return;
+        if (!username) {
+            ctx.status = 600; // 아이디를 입력해주세요
+            return;
+        }
+        if (!password) {
+            ctx.status = 601; // 비밀번호를 입력해주세요
+            return;
+        }
     }
 
     try {
         const user = await User.findByUsername(username);
         // 계정이 존재하지 않으면 에러 처리
         if (!user) {
-            ctx.status = 401;
+            ctx.status = 602;
             return;
         }
         const valid = await user.checkPassword(password);
         // 잘못된 비밀번호
         if (!valid) {
-            ctx.status = 402;
+            ctx.status = 603;
             return;
         }
         ctx.body = user.serialize();
