@@ -11,6 +11,7 @@ import createSagaMiddleware from 'redux-saga';
 import rootReducer, { rootSaga } from './modules';
 import { tempSetUser, check } from './modules/user';
 import { HelmetProvider } from 'react-helmet-async';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(

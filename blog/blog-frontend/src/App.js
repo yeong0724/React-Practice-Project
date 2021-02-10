@@ -6,6 +6,7 @@ import RegisterPage from './pages/RegisterPage';
 import WritePage from './pages/WritePage';
 import PostPage from './pages/PostPage';
 import { Helmet } from 'react-helmet-async';
+
 const App = () => {
     return (
         <>

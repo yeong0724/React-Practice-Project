@@ -20,7 +20,7 @@ const [
 ] = createRequestActionTypes('write/WRITE_POST');
 
 /* 4. 현재 보고있는 Post의 정보(내용, tag 등)을 관리하는 상태에 넣어줌 */
-const SET_ORIGINAL_POST = 'wrtie/SET_ORIGINAL_POST';
+const SET_ORIGINAL_POST = 'write/SET_ORIGINAL_POST';
 
 /* 5. post 수정 */
 const [

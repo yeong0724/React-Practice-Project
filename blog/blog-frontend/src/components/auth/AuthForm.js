@@ -11,14 +11,15 @@ const AuthFormBlock = styled.div`
         color: ${palette.gray[8]};
         margin-bottom: 1rem;
     }
+    text-align: center;
 `;
 
 /* Styling 된 input tag */
 const StyledInput = styled.input`
-    font-size: 1rem;
+    font-size: 1.5rem;
     border: none;
     border-bottom: 1px solid ${palette.gray[5]};
-    padding-bottom: 0.5rem;
+    padding-bottom: 0.8rem;
     outline: none;
     width: 100%;
     &:focus {
@@ -26,7 +27,7 @@ const StyledInput = styled.input`
         border-bottom: 1px solid ${palette.gray[7]};
     }
     & + & {
-        margin-top: 1rem;
+        margin-top: 2rem;
     }
 `;
 
@@ -45,14 +46,23 @@ const Footer = styled.div`
 
 /* common의 Button에 추가적인 style을 부여함 */
 const ButtonWithMarginTop = styled(Button)`
-    margin-top: 1rem;
+    margin-top: 2.5rem;
 `;
 
 const ErrorMessage = styled.div`
     color: red;
     text-align: center;
-    font-size: 0.875rem;
-    margin-top: 1rem;
+    font-size: 2.5rem;
+    margin-top: 3rem;
+`;
+
+const MenuName = styled.div`
+    text-align: left;
+    font-size: 2.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    letter-spacing: 2px;
 `;
 
 const textMap = {
@@ -64,7 +74,7 @@ const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
     const text = textMap[type];
     return (
         <AuthFormBlock>
-            <h3>{text}</h3>
+            <MenuName>{text}</MenuName>
             <form onSubmit={onSubmit}>
                 <StyledInput
                     autoComplete="username"
@@ -93,9 +103,11 @@ const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
                 )}
                 {error && <ErrorMessage>{error}</ErrorMessage>}
                 {/* true는 생략 가능 */}
-                <ButtonWithMarginTop cyan={true} fullWidth={true}>
-                    {text}
-                </ButtonWithMarginTop>
+                <AuthFormBlock>
+                    <ButtonWithMarginTop cyan={true} fullWidth={true}>
+                        {text}
+                    </ButtonWithMarginTop>
+                </AuthFormBlock>
             </form>
             <Footer>
                 {type === 'login' ? (

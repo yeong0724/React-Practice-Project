@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 const buttonStyle = css`
     border: none;
+    text-align: center;
     border-radius: 4px;
     font-size: 1rem;
     font-weight: bold;
@@ -13,7 +14,6 @@ const buttonStyle = css`
     color: white;
     outline: none;
     cursor: pointer;
-
     background: ${palette.gray[8]};
     &:hover {
         background: ${palette.gray[6]};
@@ -24,8 +24,8 @@ const buttonStyle = css`
         css`
             padding-top: 0.75rem;
             padding-bottom: 0.75rem;
-            width: 100%;
-            font-size: 1.125rem;
+            width: 75%;
+            font-size: 2rem;
         `}
 
     ${(props) =>
